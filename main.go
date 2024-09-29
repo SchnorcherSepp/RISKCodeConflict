@@ -99,6 +99,7 @@ func main() {
 
 	// human only
 	if humanPlayer > 0 && aiPlayer+remotePlayer == 0 {
+		w.InitPopulation()
 		w.Freeze = false
 	}
 
