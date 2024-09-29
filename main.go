@@ -85,14 +85,21 @@ func main() {
 	}
 
 	// start server
-	go remote.RunServer(host, port, w, aiPlayer+remotePlayer+humanPlayer)
-	time.Sleep(200 * time.Millisecond)
+	if aiPlayer+remotePlayer > 0 {
+		go remote.RunServer(host, port, w, aiPlayer+remotePlayer+humanPlayer)
+		time.Sleep(200 * time.Millisecond)
+	}
 
 	// add local AIs
 	for i := 0; i < aiPlayer; i++ {
 		name := fmt.Sprintf("RandomAI %d", i+1)
 		go ai.Play(host, port, name, playerColors[colorIndex])
 		colorIndex++
+	}
+
+	// human only
+	if humanPlayer > 0 && aiPlayer+remotePlayer == 0 {
+		w.Freeze = false
 	}
 
 	// run gui (blocking)
